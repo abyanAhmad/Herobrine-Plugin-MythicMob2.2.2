@@ -1,0 +1,285 @@
+
+
+BUG_HP_Herobrine_Spawn:
+  Cooldown: 5
+  Skills:
+  - potion{t=SLOW;l=10;d=40;force=true;hasParticles=false} @self
+  - sound{s=entity.enderman.teleport;p=0.6;v=2} @self
+  - sound{s=block.beacon.activate;p=0.1;v=2} @self
+  - delay 5
+  - equip{item=nether_star:0}
+  - effect:particles{p=enchantment_table;amount=30;hS=0.5;vS=1;speed=0.05;y=1} @self
+  - effect:particles{p=portal;amount=15;hS=1;vS=1;y=1;speed=0;repeat=2;repeatInterval=5} @origin
+  - effect:lightning @Self
+  - sound{s=entity.wither.spawn;p=0.5;v=2} @Self
+  - sendtitle{title="&f&lHerobrine";subtitle="";d=40} @PlayersNearOrigin{r=30}
+  - delay 20
+  - sendtitle{title="&f&lHerobrine";subtitle="&dHerobrine has never been in the game...";d=40} @PlayersNearOrigin{r=30}
+  - delay 30
+  - sendtitle{title="&f&lHerobrine";subtitle="&dHerobrine has &knever &r&dbeen in the game...";d=50;fo=15} @PlayersNearOrigin{r=30}
+  - delay 30
+  - modifymobscore{objective=stage;action=set;value=1}
+
+BUG_HP_Herobrine_Stage:
+  Cooldown: 5
+  Skills:
+  - modifymobscore{objective=skill;action=set;value=1} @Self
+  - modifymobscore{objective=stage;action=set;value=3} @Self
+  - potion{t=SLOW;d=2147483647;l=9;force=true;hasParticles=false} @self @self
+  - effect:lightning{l=true,lr=30} @Ring{radius=15;points=15}
+  - damage{amount=5} @PIR{r=15}
+  - delay 10
+  - effect:lightning{l=true,lr=30} @Ring{radius=12;points=11}
+  - damage{amount=5} @PIR{r=12}
+  - delay 10
+  - effect:lightning{l=true,lr=30} @Ring{radius=9;points=8}
+  - damage{amount=5} @PIR{r=9}
+  - delay 10
+  - effect:lightning{l=true,lr=30} @Ring{radius=6;points=5}
+  - damage{amount=5} @PIR{r=6}
+  - delay 10
+  - effect:lightning{l=true,lr=30} @Ring{radius=3;points=3}
+  - damage{amount=5} @PIR{r=3}
+  - delay 10
+  - sound{s=block.beacon.activate;v=2;p=0.1} @self
+  - delay 10
+  - effect:explosion @self
+  - sound{s=entity.wither.spawn;p=0.5;v=2} @self
+  - potion{type=BLINDNESS;duration=90;level=4;force=true;hasParticles=false} @PIR{r=30}
+  - potion{type=CONFUSION;duration=170;level=4;force=true;hasParticles=false} @PIR{r=30}
+  - delay 10
+  - summon{type=BUG_HP_Herobrine-Minion;amount=1;radius=0} @RLNTE{a=8;r=10;s=3;minr=2}
+  - teleport{spreadh=0;spreadv=0} @RLNTE{a=1;r=8;s=3;minr=4}
+  - sound{s=entity.enderman.teleport;p=0.8;v=2} @self
+  - effect:particles{p=enchantment_table;amount=30;hS=0.5;vS=1;speed=0.05;y=1} @self
+  - effect:particles{p=portal;amount=15;hS=1;vS=1;y=1;speed=0;repeat=2;repeatInterval=5} @origin
+  - runaigoalselector{goal=clear}
+  - runaigoalselector{goal=skeletonbowattack}
+  - runaigoalselector{goal=lookatplayers}
+  - sound{s=item.armor.equip_iron;p=1.3;v=2} @self
+  - equip{item=bow:0}
+  - modifymobscore{objective=distance;action=set;value=0} @Self
+  - modifymobscore{objective=distance2;action=set;value=1} @Self
+  - modifymobscore{objective=skill;action=set;value=0} @Self
+  - modifymobscore{objective=stage;action=set;value=2} @Self
+
+BUG_HP_Herobrine_Death:
+  Cooldown: 5
+  Skills:
+  - effect:lightning @self
+  - delay 5
+  - sound{s=entity.wither.death;p=0.5}
+  - sendtitle{title="&aNice one!";subtitle="&f&lHerobrine &awas killed by &b&l<trigger.name>&a!";d=65} @PIR{r=30}
+  - sound{s=ui.toast.challenge_complete} @PIR{r=30}
+  - effect:particles{particle=portal;amount=15;hS=0.5;vS=0.5;speed=0;repeat=4;repeatInterval=5} @Origin
+  - delay 25
+  - effect:particles{particle=portal;amount=15;hS=0.3;vS=0.3;speed=0;repeat=4;repeatInterval=5} @Origin
+  - delay 25
+  - effect:particles{particle=portal;amount=15;hS=0.1;vS=0.1;speed=0;repeat=3;repeatInterval=5} @Origin
+
+#_______________________________________________________________________________
+#
+#-----------------------------+ SELECTOR SKILLS +------------------------------#
+#_______________________________________________________________________________
+
+BUG_HP_Herobrine_Attack:
+  Conditions:
+  - score{objective=stage;v=1} true
+  - score{objective=skill;v=0} true
+  - targetwithin{d=40}
+  Skills:
+  - randomskill{skills=BUG_HP_Herobrine_Attack-1,BUG_HP_Herobrine_Attack-2,BUG_HP_Herobrine_Attack-3}
+
+BUG_HP_Herobrine_Particle:
+  Conditions:
+  - score{objective=stage;v=1} true
+  Skills:
+  - effect:particles{p=enchantment_table;amount=2;hS=0.55;vS=1.4;speed=0;y=0.2;repeat=3;repeatInterval=5}
+  - effect:particles{p=portal;amount=2;hS=0.6;vS=1.4;speed=0;y=0;repeat=3;repeatInterval=5}
+
+BUG_HP_Herobrine-Spawner_Particle:
+  Skills:
+  - effect:particles{particle=enchantment_table;amount=5;hS=0.5;vS=0.5;speed=-0.2;repeat=3;repeatInterval=5}
+  - effect:particles{particle=portal;amount=5;hS=0.5;vS=0.5;speed=-0.2;repeat=3;repeatInterval=5}
+
+BUG_HP_Herobrine_Damaged-0:
+  Skills:
+  - sound{s=entity.ender_dragon.hurt;p=0.8;v=1}
+  - effect:particles{p=enchantment_table;amount=4;hS=0.55;vS=1.4;speed=0.2;y=0.2}
+  - effect:particles{p=portal;amount=4;hS=0.6;vS=1.4;speed=0.2;y=0}
+BUG_HP_Herobrine_Damaged-1:
+  Skills:
+  - sound{s=entity.ghast.scream;p=0.8;v=1}
+  - potion{type=SLOW;duration=1;level=0;force=true;hasParticles=false}
+  - modifymobscore{objective=stage;action=set;value=1} @Self
+BUG_HP_Herobrine_Damaged-2:
+  Skills:
+  - CancelEvent
+
+#_______________________________________________________________________________
+#
+#------------------------------+ ATTACK SKILLS +-------------------------------#
+#_______________________________________________________________________________
+
+BUG_HP_Herobrine_Attack-1:
+  Cooldown: 12
+  Skills:
+  - modifymobscore{objective=skill;action=set;value=1} @Self
+  - effect:lightning @self
+  - summon{type=BUG_HP_Herobrine-Circle;radius=0} @Target
+  - delay 5
+  - potion{type=BLINDNESS;duration=60;level=4;force=true;hasParticles=false;hasIcon=false} @target
+  - potion{type=CONFUSION;duration=120;level=4;force=true;hasParticles=false;hasIcon=false} @target
+  - delay 5
+  - teleport{spreadh=5;spreadv=0} @Target
+  - sound{s=entity.enderman.teleport;p=0.8;v=2} @self
+  - effect:particles{p=enchantment_table;amount=30;hS=0.5;vS=1;speed=0.05;y=1} @self
+  - effect:particles{p=portal;amount=15;hS=1;vS=1;y=1;speed=0;repeat=2;repeatInterval=5} @origin
+  - potion{type=SPEED;duration=50;level=4;force=true;hasParticles=false} @self
+  - delay 100
+  - modifymobscore{objective=skill;action=set;value=0} @Self
+
+BUG_HP_Herobrine_Attack-2:
+  Cooldown: 15
+  Skills:
+  - modifymobscore{objective=skill;action=set;value=1} @Self
+  - sound{s=entity.wither.shoot;p=0.3} @self
+  - missile{oT=BUG_HP_Herobrine_Attack-2_Tick;oH=BUG_HP_Herobrine_Attack-2_Hit;v=4;i=1;hR=1;vR=1;mr=18} @Target
+  - delay 150
+  - modifymobscore{objective=skill;action=set;value=0} @Self
+BUG_HP_Herobrine_Attack-2_Hit:
+  Skills:
+  - damage{a=14} @PlayersNearOrigin{r=2}
+  - effect:sound{s=block.fire.extinguish;v=1;p=0.5} @PIR{r=6}
+  - potion{type=CONFUSION;duration=120;level=1;force=true;hasParticles=false;hasIcon=false} @PlayersNearOrigin{r=2}
+  - potion{type=SLOW;duration=120;level=1;force=true;hasParticles=false;hasIcon=false} @PlayersNearOrigin{r=2}
+  - effect:particles{p=fireworks_spark;amount=8;hS=1;vS=1;speed=0.01;y=0.2;repeat=23;repeatInterval=5} @PlayersNearOrigin{r=2}
+  - effect:particles{p=portal;amount=8;hS=1;vS=1;speed=0.01;y=0.2;repeat=19;repeatInterval=5} @PlayersNearOrigin{r=2}
+BUG_HP_Herobrine_Attack-2_Tick:
+  Skills:
+  - effect:particles{p=fireworks_spark;amount=1;hSpread=0.1;vSpread=0.1;speed=0.1;yOffset=0} @origin
+  - delay 1
+  - effect:particles{p=enchantment_table;amount=2;hSpread=0.1;vSpread=0.1;speed=0.1;yOffset=0} @origin
+
+BUG_HP_Herobrine_Attack-3:
+  Conditions:
+  - score{objective=distance2;v=1}
+  Skills:
+  - modifymobscore{objective=skill;action=set;value=1} @Self
+  - potion{type=SLOW;duration=50;level=10;force=true;hasParticles=false} @self
+  - delay 20
+  - sound{s=entity.arrow.shoot;p=1;repeat=3;repeatinterval=10} @self
+  - projectile{oT=BUG_HP_Herobrine_Attack-3_Tick;oH=BUG_HP_Herobrine_Attack-3_Hit;oE=BUG_HP_Herobrine_Attack-3_End;v=20;i=1;hR=1;vR=1.5;mr=30;g=0.05;syo=1.7;tyo=0.8;repeat=2;repeatinterval=10} @Target
+  - delay 130
+  - modifymobscore{objective=skill;action=set;value=0} @Self
+BUG_HP_Herobrine_Attack-3_Hit:
+  Skills:
+  - effect:particles{particle=fireworks_spark;amount=6;hS=0.5;vS=0.5;speed=0.01;y=1} @target
+  - damage{a=13;ia=false} @target
+BUG_HP_Herobrine_Attack-3_Tick:
+  Skills:
+  - effect:particles{p=crit;amount=1;hSpread=0.1;vSpread=0.1;speed=0.1;yOffset=0} @origin
+  - delay 1
+  - effect:particles{p=enchantment_table;amount=2;hSpread=0.1;vSpread=0.1;speed=0.1;yOffset=0} @origin
+BUG_HP_Herobrine_Attack-3_End:
+  Skills:
+  - effect:particles{p=fireworks_spark;amount=5;speed=0.04;hs=0.4;vs=0} @origin
+  - sound{s=entity.arrow.hit;p=1} @origin
+
+#_______________________________________________________________________________
+#
+#-------------------------------+ OTHER SKILLS +-------------------------------#
+#_______________________________________________________________________________
+
+BUG_HP_Herobrine_Distance-Checker:
+  Cooldown: 2
+  Conditions:
+  - score{objective=skill;v=0} true
+  - score{objective=stage;v=1} true
+  - playerwithin{d=40}
+  Skills:
+  - skill{s=BUG_HP_Herobrine_Distance-Near}
+  - skill{s=BUG_HP_Herobrine_Distance-Far}
+  - delay 10
+  - skill{s=BUG_HP_Herobrine_isNear} @Self
+  - skill{s=BUG_HP_Herobrine_isFar} @Self
+BUG_HP_Herobrine_Distance-Near:
+  Conditions:
+  - targetwithin{d=8}
+  Skills:
+  - modifymobscore{objective=distance;action=set;value=0} @Self
+BUG_HP_Herobrine_isNear:
+  Conditions:
+  - score{objective=distance;v=0}
+  - score{objective=distance2;v=1}
+  Skills:
+  - modifymobscore{objective=skill;action=set;value=1} @Self
+  - modifymobscore{objective=distance2;action=set;value=0} @Self
+  #- message{m="<mob.name> &cis switching to close combat!"} @PIR{r=40}
+  - runaigoalselector{goal=clear}
+  - runaigoalselector{goal=meleeattack}
+  - runaigoalselector{goal=randomstroll}
+  - runaigoalselector{goal=lookatplayers}
+  - sound{s=item.armor.equip_iron;p=1.3;v=2} @self
+  - equip{item=nether_star:0}
+  - modifymobscore{objective=skill;action=set;value=0} @Self
+BUG_HP_Herobrine_Distance-Far:
+  Conditions:
+  - targetnotwithin{d=8}
+  Skills:
+  - modifymobscore{objective=distance;action=set;value=1}
+BUG_HP_Herobrine_isFar:
+  Conditions:
+  - score{objective=distance;v=1}
+  - score{objective=distance2;v=0}
+  Skills:
+  - modifymobscore{objective=skill;action=set;value=1} @Self
+  - modifymobscore{objective=distance2;action=set;value=1} @Self
+  #- message{m="<mob.name> &cis switching to long-range combat!"} @PIR{r=40}
+  - runaigoalselector{goal=clear}
+  - runaigoalselector{goal=skeletonbowattack}
+  - runaigoalselector{goal=randomstroll}
+  - runaigoalselector{goal=lookatplayers}
+  - sound{s=item.armor.equip_iron;p=1.3;v=2} @self
+  - equip{item=bow:0}
+  - modifymobscore{objective=skill;action=set;value=0} @Self
+
+BUG_HP_Herobrine_Heal:
+  Skills:
+  - equip{item=enchanted_golden_apple:5}
+  - delay 20
+  - sound{s=entity.generic.eat;p=0.8;v=1}
+  - effect:particles{p=item_crack;m=enchanted_golden_apple;amount=5;hS=0.2;vS=0.1;speed=0;y=1.6;repeat=5;repeatInterval=5}
+  - delay 30
+  - heal{amount=250} @self
+  - sound{s=entity.player.burp;p=0.8;v=1}
+  - equip{item=air:5}
+
+BUG_HP_Herobrine-Minion_Suicide:
+  Conditions:
+  - hasparent false
+  Skills:
+  - remove @Self
+
+BUG_HP_Herobrine-Spawner_Checker:
+  Conditions:
+  - score{objective=skill;v=0} true
+  - inblock redstone_torch
+  Skills:
+  - modifymobscore{objective=skill;action=set;value=1} @Self
+  - delay 10
+  - sound{s=block.beacon.activate;p=0.1;v=2} @self
+  - delay 40
+  - summon{type=BUG_HP_Herobrine;amount=1;radius=0} @Origin
+  - delay 5
+  - remove @Self
+
+BUG_HP_Herobrine-Circle_Tick:
+  Skills:
+  - effect:particlering{particle=fireworks_spark;radius=3;points=18;amount=1;hS=0;vS=0;y=0.2} @Origin
+  - effect:particles{p=portal;amount=2;hS=0.7;vS=1.2;speed=0;y=1} @PlayersNearOrigin{r=3}
+  - effect:particles{p=enchantment_table;amount=2;hS=0.7;vS=1.2;speed=0} @PlayersNearOrigin{r=3}
+  - potion{type=SLOW;duration=100;level=1;force=true;hasParticles=false;hasIcon=false} @PlayersNearOrigin{r=3}
+  - potion{type=WEAKNESS;duration=100;level=1;force=true;hasParticles=false;hasIcon=false} @PlayersNearOrigin{r=3}
+  - damage{a=10;ia=false;pkb=true} @PlayersNearOrigin{r=3}
+  - damage{a=2;ia=true;pkb=true} @PlayersNearOrigin{r=3}

@@ -1,0 +1,115 @@
+
+BUG_HP_Herobrine:
+  Type: SKELETON
+  Display: '&f&lHerobrine'
+  Health: 1250
+  Faction: Enemy
+  Options:
+    Collidable: true
+    KnockbackResistance: 1
+    MovementSpeed: 0.26
+    PreventItemPickup: true
+    PreventOtherDrops: true
+    PreventRandomEquipment: true
+    MaxCombatDistance: 50
+    Silent: true
+    PreventSunburn: true
+  BossBar:
+    Enabled: true
+    Title: '&5&l⚔ &f&lHerobrine &5&l⚔ &f&l<&da> &r&a<caster.hp> &c<&heart>'
+    Range: 30
+    Color: PURPLE
+    Style: SEGMENTED_20
+    CreateFog: true
+    DarkenSky: true
+    PlayMusic: false
+  Modules:
+    ThreatTable: true
+  AIGoalSelectors:
+  - 0 clear
+  - 1 meleeattack
+  - 2 randomstroll
+  - 3 lookatplayers
+  AITargetSelectors:
+  - 0 clear
+  - 1 threatholder
+  - 2 players
+  - 3 hurtbytarget
+  Disguise: player Herobrine setSkin Herobrine setSneaking setNameVisible false
+  Drops:
+  - exp 200 1
+  - gold_block 3-8 1
+  - nether_star 1 1
+  - PLAYER_HEAD{name="&eHerobrine<&sq>s Head";lore="&c<&da> Removed Herobrine";skullTexture=ewogICJ0aW1lc3RhbXAiIDogMTY2MTM2Mzg4MTE2MywKICAicHJvZmlsZUlkIiA6ICJmODRjNmE3OTBhNGU0NWUwODc5YmNkNDllYmQ0YzRlMiIsCiAgInByb2ZpbGVOYW1lIiA6ICJIZXJvYnJpbmUiLAogICJ0ZXh0dXJlcyIgOiB7CiAgICAiU0tJTiIgOiB7CiAgICAgICJ1cmwiIDogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWQ1OGFjNTc4ZDhkNDZiMDljNjFlNjUwOGNkOTFhNDI3NjA2ODI0MzQ0MjM0ZThlOGViMDgyY2FjMjhiNWI0MCIKICAgIH0KICB9Cn0=}
+  Skills:
+  - skill{s=BUG_HP_Herobrine_Spawn} @Self ~onSpawn
+  - skill{s=BUG_HP_Herobrine_Stage} @Self ~onDamaged =50%
+  - skill{s=BUG_HP_Herobrine_Death} @Self ~onDeath
+  - skill{s=BUG_HP_Herobrine_Attack} @Self ~onTimer:125 0.65
+  - skill{s=BUG_HP_Herobrine_Particle} @self ~onTimer:20 1
+  - skill{s=BUG_HP_Herobrine_Damaged-0} @self ?score{objective=stage;value=1} ~onDamaged 1
+  - skill{s=BUG_HP_Herobrine_Damaged-1} @self ?score{objective=stage;value=2} ~onDamaged 1
+  - skill{s=BUG_HP_Herobrine_Damaged-2;sync=true} @self ?score{objective=stage;value=3} ~onDamaged 1
+  - skill{s=BUG_HP_Herobrine_Distance-Checker} @self ~onTimer:60 1
+  - skill{s=BUG_HP_Herobrine_Heal} @self ~onKillPlayer
+  - damage{amount=15} @Trigger ~onAttack
+  - extinguish @Self ~onDamaged
+
+BUG_HP_Herobrine-Minion:
+  Type: SKELETON
+  Display: '&f&lHerobrine'
+  Health: 10
+  Faction: Enemy
+  Equipment:
+  - bow:0
+  Options:
+    Collidable: true
+    KnockbackResistance: 1
+    MovementSpeed: 0
+    PreventItemPickup: true
+    PreventOtherDrops: true
+    PreventRandomEquipment: true
+    MaxCombatDistance: 50
+    Silent: true
+    PreventSunburn: true
+  AIGoalSelectors:
+  - 0 clear
+  - 1 skeletonbowattack
+  - 2 lookatplayers
+  AITargetSelectors:
+  - 0 clear
+  - 1 threatholder
+  - 2 players
+  - 3 hurtbytarget
+  Disguise: player Herobrine setSkin Herobrine setSneaking setNameVisible false
+  Skills:
+  - potion{t=SLOW;d=2147483647;l=9;force=true;hasParticles=false} @self ~onSpawn
+  - effect:particles{p=enchantment_table;amount=20;hS=0.5;vS=1;speed=0.05;y=1} @self ~onSpawn
+  - effect:particles{p=enchantment_table;amount=30;hS=0.5;vS=1;speed=0.05;y=1} @self ~onDeath
+  - skill{s=BUG_HP_Herobrine_Particle} @self ~onTimer:20 1
+  - skill{s=BUG_HP_Herobrine_Damaged-0} @self ~onDamaged 1
+  - skill{s=BUG_HP_Herobrine-Minion_Suicide} @self ~onTimer:40 1
+  - damage{amount=10} @Trigger ~onAttack
+
+BUG_HP_Herobrine-Spawner:
+  Type: ARMOR_STAND
+  Skills:
+  - skill{s=BUG_HP_Herobrine-Spawner_Checker} @self ~onTimer:30
+  - skill{s=BUG_HP_Herobrine-Spawner_Particle} @self ~onTimer:20
+  Options:
+    Invisible: true
+    Marker: true
+    Small: true
+    HasGravity: false
+
+BUG_HP_Herobrine-Circle:
+  Type: ARMOR_STAND
+  Skills:
+  - remove{delay=200} @Self ~onSpawn
+  - effect:explosion @Self ~onSpawn
+  - skill{s=BUG_HP_Herobrine-Circle_Tick} @Self ~onTimer:5
+  Options:
+    Invisible: true
+    Marker: true
+    Small: true
+    HasGravity: false
